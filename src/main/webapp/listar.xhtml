@@ -3,6 +3,7 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
 	template="/resources/scaffold/pageTemplate.xhtml">
 
 	<ui:param name="pageTitle" value="Welcome to Forge" />
@@ -17,21 +18,27 @@
 		</h2>
 
 		<div>
-			<h:form enctype="multipart/form-data">
-				<h:outputLabel value="Nome:" />
-				<h:inputText value="#{contaBean.conta.nome}"/>
-				<br/>
-				<h:outputLabel value="Valor:" />
-				<h:inputText value="#{contaBean.conta.valor}"/>
-				<br/>
-				<h:outputLabel value="Data Pagamento:" />
-				<h:inputText value="#{contaBean.conta.dataPagamento}"/>
-				<br/>
-				<h:outputLabel value="Status:" />
-				<h:selectBooleanCheckbox value="#{contaBean.conta.estado}" />
-				<br/>
-				<h:commandButton value="Enviar"  action="#{contaBean.salvar(this)}"/>
-			</h:form>
+			<h:dataTable var="conta" value="#{contaBean.contas}">
+		<h:column>
+			<f:facet name="header">Conta</f:facet>
+			#{conta.nome}
+		</h:column>
+		<h:column>
+			<f:facet name="header">Valor</f:facet>
+			#{conta.valor}
+		</h:column>
+		<h:column>
+			<f:facet name="header">Data Pagamento</f:facet>
+			#{conta.dataPagamento}
+		</h:column>
+<!-- 		<h:column> -->
+<!-- 			<f:facet name="header">Autores</f:facet> -->
+<!-- 			<ui:repeat value="#{livro.autores}" var="autor"> -->
+<!-- 				#{autor.nome}, -->
+<!-- 			</ui:repeat> -->
+<!-- 		</h:column> -->
+		
+	</h:dataTable>
 		</div>		
 
 	</ui:define>

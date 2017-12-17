@@ -1,13 +1,11 @@
 package org.meuorcamento.model;
 
-import java.util.Calendar;
+import java.time.LocalDate;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 @Entity
 public class Conta {
@@ -16,9 +14,9 @@ public class Conta {
 	private int id;
 	private String nome;
 	private Double valor;
-	@Temporal(TemporalType.DATE)
-	private Calendar dataPagamento;
+	private LocalDate dataPagamento = LocalDate.now();
 	private boolean estado;
+	private boolean repetir;
 	
 	
 	public int getId() {
@@ -39,10 +37,10 @@ public class Conta {
 	public void setValor(Double valor) {
 		this.valor = valor;
 	}
-	public Calendar getDataPagamento() {
+	public LocalDate getDataPagamento() {
 		return dataPagamento;
 	}
-	public void setDataPagamento(Calendar dataPagamento) {
+	public void setDataPagamento(LocalDate dataPagamento) {
 		this.dataPagamento = dataPagamento;
 	}
 	public boolean isEstado() {
@@ -50,6 +48,12 @@ public class Conta {
 	}
 	public void setEstado(boolean estado) {
 		this.estado = estado;
+	}
+	public boolean isRepetir() {
+		return repetir;
+	}
+	public void setRepetir(boolean repetir) {
+		this.repetir = repetir;
 	}
 	
 	

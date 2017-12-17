@@ -17,20 +17,23 @@
 		</h2>
 
 		<div>
-			<h:form enctype="multipart/form-data">
+			<h:form id="contasForm">
 				<h:outputLabel value="Nome:" />
-				<h:inputText value="#{contaBean.conta.nome}"/>
+				<h:inputText id="nome" value="#{contaBean.conta.nome}"/>
 				<br/>
 				<h:outputLabel value="Valor:" />
-				<h:inputText value="#{contaBean.conta.valor}"/>
+				<h:inputText id="valor" value="#{contaBean.conta.valor}"/>
 				<br/>
 				<h:outputLabel value="Data Pagamento:" />
-				<h:inputText value="#{contaBean.conta.dataPagamento}"/>
+				<h:inputText id="dataPagamento" converter="dateConverter" value="#{contaBean.conta.dataPagamento}" />
 				<br/>
 				<h:outputLabel value="Status:" />
-				<h:selectBooleanCheckbox value="#{contaBean.conta.estado}" />
+				<h:selectBooleanCheckbox id="estado" value="#{contaBean.conta.estado}" />
 				<br/>
-				<h:commandButton value="Enviar"  action="#{contaBean.salvar(this)}"/>
+				<h:outputLabel value="Repetir:" />
+				<h:selectBooleanCheckbox id="repetir" value="#{contaBean.conta.repetir}" />
+				<br/>
+				<h:commandButton value="Enviar"  action="#{contaBean.salvar}"/>
 			</h:form>
 		</div>		
 
