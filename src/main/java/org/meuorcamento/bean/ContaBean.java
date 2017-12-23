@@ -54,7 +54,7 @@ public class ContaBean {
 	}
 	
 	public List<Conta> getContas(){
-		return dao.listaTodos();
+		return dao.listaMesAtual();
 	}
 	
 
