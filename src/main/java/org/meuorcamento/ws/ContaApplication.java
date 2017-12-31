@@ -6,6 +6,7 @@ import java.util.Set;
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
 
+import org.meuorcamento.util.ObjectMapperContextResolver;
 import org.meuorcamento.ws.resource.ContaResource;
 
 @ApplicationPath("api")
@@ -20,6 +21,8 @@ public class ContaApplication extends Application{
 	    {
 	        final Set<Class<?>> classes = new HashSet<>();
 	        classes.add(ContaResource.class);
+	        classes.add(ResponseFilter.class);
+	        classes.add(ObjectMapperContextResolver.class);
 	        
 	        
 	        return classes;

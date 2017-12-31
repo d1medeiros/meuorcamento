@@ -49,4 +49,15 @@ public class ContaDao {
 		
 	}
 	
+	public List<Conta> listaMesPorNumero(int mes, int ano) {
+		
+		List<Conta> todos = listaTodos();
+		return todos.stream()
+				.filter(conta -> conta.getDataPagamento().getMonth() == LocalDate.now().withMonth(mes).getMonth())
+				.filter(conta -> conta.getDataPagamento().getYear() == LocalDate.now().withYear(ano).getYear())
+				.collect(Collectors.toList());
+		
+		
+	}
+	
 }

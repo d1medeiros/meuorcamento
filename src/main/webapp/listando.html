@@ -17,26 +17,34 @@
 
 <div class="container">
   
-  <h1>Lista</h1>
+  <div>
+	  <h1>Lista</h1>
+	  <a id="btn-lista-home" type="button" class="btn btn-link" href="conta.xhtml">Voltar</a>
+  </div>
+
+<br />
   
-  <div class="row">
-    <div class="col-sm" id="col1-lista">
+
+  
+  <div class="row text-center">
+    <div class="col" id="col1-lista">
 		<button id="btn-lista-1" type="button" class="btn btn-primary">Mês - Anterior</button>
     </div>
-    <div class="col-sm" id="col2-lista">
+    <div class="col" id="col2-lista">
 		<button id="btn-lista-2" type="button" class="btn btn-primary" onclick="getConta()">Mês - Atual</button>
     </div>
-    <div class="col-sm" id="col3-lista">
-		<button id="btn-lista-3" type="button" class="btn btn-primary">Mês - Próximo</button>
+    <div class="col" id="col3-lista">
+		<button id="btn-lista-3" type="button" class="btn btn-primary" onclick="getContaNext()">Mês - Próximo</button>
     </div>
   </div>
 
 <br />
 
   <div class="row">
-    <div class="col-sm" id="tbl-lista">
+    <div class="col" id="tbl-lista">
 	  <table class="table">
 	  <thead>
+	  	<tr id="tr-label-lista" class="text-center" scope="col"/>
 	    <tr>
 	      <th scope="col">#</th>
 	      <th scope="col">Nome</th>
@@ -46,13 +54,6 @@
 	    </tr>
 	  </thead>
 	  <tbody id="inserir-lista">
-<!-- 	    <tr > -->
-<!-- 	      <th id="lista-inp-id" scope="row"/> -->
-<!-- 	      <td id="lista-inp-nome"/> -->
-<!-- 	      <td id="lista-inp-valor"/> -->
-<!-- 	      <td id="lista-inp-dtapagamento"/> -->
-<!-- 	      <td id="lista-inp-estado"/> -->
-<!-- 	    </tr> -->
 	  </tbody>
 	</table>
    </div>
