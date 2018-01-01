@@ -3,6 +3,8 @@ package org.meuorcamento.model;
 import java.time.LocalDate;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -19,6 +21,8 @@ public class Conta {
 	private LocalDate dataPagamento = LocalDate.now();
 	private boolean estado;
 	private boolean repetir;
+	@Enumerated(EnumType.STRING)
+	private TipoConta tipoConta;
 	
 	
 	public int getId() {
@@ -56,6 +60,12 @@ public class Conta {
 	}
 	public void setRepetir(boolean repetir) {
 		this.repetir = repetir;
+	}
+	public TipoConta getTipoConta() {
+		return tipoConta;
+	}
+	public void setTipoConta(TipoConta tipoConta) {
+		this.tipoConta = tipoConta;
 	}
 	
 	

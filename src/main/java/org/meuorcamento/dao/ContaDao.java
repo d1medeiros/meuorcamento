@@ -11,6 +11,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import org.meuorcamento.model.Conta;
+import org.meuorcamento.model.TipoConta;
 
 @Stateful
 public class ContaDao {
@@ -35,8 +36,17 @@ public class ContaDao {
 		return contas;
 	}
 	
-	private LocalDate dataParaSeisMeses() {
-		return LocalDate.now().plusMonths(6).with(TemporalAdjusters.lastDayOfMonth());
+	/**
+	 * O limite e de 6 meses
+	 * @return lista de contas
+	 */
+	public List<Conta> listaPorTipoConta(TipoConta tipoConta) {
+		List<Conta> contas = null;
+		Query q = em.createQuery("select c from Conta c where c.dataPagamento < :param1 and c.tipoConta = :param2");
+		q.setParameter("param1", dataParaSeisMeses());
+		q.setParameter("param2", tipoConta);
+		contas = q.getResultList();
+		return contas;
 	}
 	
 	public List<Conta> listaMesAtual() {
@@ -58,6 +68,10 @@ public class ContaDao {
 				.collect(Collectors.toList());
 		
 		
+	}
+
+	private LocalDate dataParaSeisMeses() {
+		return LocalDate.now().plusMonths(6).with(TemporalAdjusters.lastDayOfMonth());
 	}
 	
 }
