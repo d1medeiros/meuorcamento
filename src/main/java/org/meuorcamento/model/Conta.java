@@ -23,6 +23,7 @@ public class Conta {
 	private boolean repetir;
 	@Enumerated(EnumType.STRING)
 	private TipoConta tipoConta;
+	private String chaveGrupoContas;
 	
 	
 	public int getId() {
@@ -66,6 +67,12 @@ public class Conta {
 	}
 	public void setTipoConta(TipoConta tipoConta) {
 		this.tipoConta = tipoConta;
+	}
+	public String getChaveGrupoContas() {
+		return chaveGrupoContas;
+	}
+	public void setChaveGrupoContas(String chaveGrupoContas) {
+		this.chaveGrupoContas = chaveGrupoContas;
 	}
 	
 	

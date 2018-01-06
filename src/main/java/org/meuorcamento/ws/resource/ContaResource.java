@@ -18,6 +18,7 @@ import javax.ws.rs.core.Response.Status;
 import org.meuorcamento.dao.ContaDao;
 import org.meuorcamento.model.Conta;
 import org.meuorcamento.model.TipoConta;
+import org.meuorcamento.util.TokenGenerator;
 
 @Path("conta")
 @Produces({MediaType.APPLICATION_JSON })
@@ -46,9 +47,22 @@ public class ContaResource {
 	public List<Conta> getContasAtual() {
 		return dao.listaMesAtual();
 	}
+
+	@GET
+	@Path("{id}")
+	public Conta getConta(@PathParam("id") int id) {
+		return dao.getContaById(id);
+	}
+
+	@POST
+	@Path("/remove/{id}")
+	public Response removeConta(@PathParam("id") int id) {
+		dao.remove(id);
+		return Response.noContent().build();
+	}
 	
 	@GET
-	@Path("{mesAno}")
+	@Path("/mesano/{mesAno}")
 	public List<Conta> getContasPorNumero(@PathParam("mesAno") String mesAno) {
 		int mes = Integer.valueOf(mesAno.split("-")[0]);
 		int ano = Integer.valueOf(mesAno.split("-")[1]);
@@ -67,25 +81,20 @@ public class ContaResource {
 	@Consumes({MediaType.APPLICATION_JSON })
 	public Response salva(@Valid Conta conta) {
 		
-		if(conta.isRepetir()) {
-			for(int i=0;i<13;i++) {
-				dao.inserir(geraContasParaDozeMeses(i, conta));
-			}
-		}else {
-			dao.inserir(conta);
-		}
+		dao.inserir(conta);
 		
 		return Response.noContent().build();
 	}
 	
-	private Conta geraContasParaDozeMeses(int plusMonth, Conta conta) {
-		Conta contaFutura = new Conta();
-		contaFutura.setNome(conta.getNome());
-		contaFutura.setValor(conta.getValor());
-		contaFutura.setDataPagamento(conta.getDataPagamento().plusMonths(plusMonth));
-		contaFutura.setEstado(conta.isEstado());
-		contaFutura.setTipoConta(conta.getTipoConta());
-		return contaFutura;
+	@POST
+	@Path("/altera")
+	@Produces({MediaType.APPLICATION_JSON })
+	@Consumes({MediaType.APPLICATION_JSON })
+	public Response altera(@Valid Conta conta) {
+		
+		dao.alterar(conta);
+		return Response.noContent().build();
 	}
+
 
 }
