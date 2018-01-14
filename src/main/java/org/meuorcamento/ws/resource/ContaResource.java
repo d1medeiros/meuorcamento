@@ -27,20 +27,7 @@ public class ContaResource {
 	
 	@Inject
 	private ContaDao dao;
-	
-	@GET
-	@Path("/gastos")
-	public Response getContaGastos() {
-		List<Conta> conta = dao.listaPorTipoConta(TipoConta.GASTOS);
-		return Response.ok(conta).build();
-	}
-	
-	@GET
-	@Path("/ganho")
-	public Response getContaGanho() {
-		List<Conta> conta = dao.listaPorTipoConta(TipoConta.GANHO);
-		return Response.ok(conta).build();
-	}
+
 
 	@GET
 	@Path("/atual")
@@ -58,6 +45,13 @@ public class ContaResource {
 	@Path("/remove/{id}")
 	public Response removeConta(@PathParam("id") int id) {
 		dao.remove(id);
+		return Response.noContent().build();
+	}
+	
+	@POST
+	@Path("/remove/todos/{id}")
+	public Response removeAllConta(@PathParam("id") int id) {
+		dao.removeAll(id);
 		return Response.noContent().build();
 	}
 	
@@ -91,8 +85,16 @@ public class ContaResource {
 	@Produces({MediaType.APPLICATION_JSON })
 	@Consumes({MediaType.APPLICATION_JSON })
 	public Response altera(@Valid Conta conta) {
-		
 		dao.alterar(conta);
+		return Response.noContent().build();
+	}
+	
+	@POST
+	@Path("/altera/todos")
+	@Produces({MediaType.APPLICATION_JSON })
+	@Consumes({MediaType.APPLICATION_JSON })
+	public Response alteraTodos(@Valid Conta conta) {
+		dao.alterarAll(conta);
 		return Response.noContent().build();
 	}
 

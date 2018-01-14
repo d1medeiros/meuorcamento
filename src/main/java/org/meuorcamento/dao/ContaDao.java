@@ -27,17 +27,34 @@ public class ContaDao {
 		contaFutura.setValor(conta.getValor());
 		contaFutura.setDataPagamento(conta.getDataPagamento().plusMonths(plusMonth));
 		contaFutura.setEstado(conta.isEstado());
+		contaFutura.setRepetir(conta.isRepetir());
 		contaFutura.setTipoConta(conta.getTipoConta());
 		contaFutura.setChaveGrupoContas(conta.getChaveGrupoContas());
 		return contaFutura;
 	}
 	
+	private Conta geraContaPelaAlteracao(Conta conta, Conta alteracao) {
+		LocalDate withDayOfMonth = conta.getDataPagamento().withDayOfMonth(alteracao.getDataPagamento().getDayOfMonth());
+		conta.setNome(alteracao.getNome());
+		conta.setValor(alteracao.getValor());
+		conta.setDataPagamento(withDayOfMonth);
+		conta.setEstado(alteracao.isEstado());
+		conta.setRepetir(alteracao.isRepetir());
+		conta.setTipoConta(alteracao.getTipoConta());
+		return conta;
+	}
+	
 	public void inserir(Conta conta) {
 		conta.setChaveGrupoContas(TokenGenerator.generateToken(conta.getNome()));
+		int anoVigente = conta.getDataPagamento().getYear();
 		
 		if(conta.isRepetir()) {
 			for(int i=0;i<13;i++) {
-				em.persist(geraContasParaDozeMeses(i, conta));
+				Conta geraContasParaDozeMeses = geraContasParaDozeMeses(i, conta);
+				if(geraContasParaDozeMeses.getDataPagamento().getYear() > anoVigente)
+					break;
+				else
+					em.persist(geraContasParaDozeMeses);
 			}
 		}else {
 			em.persist(conta);
@@ -46,22 +63,22 @@ public class ContaDao {
 	}
 	
 	public void alterar(Conta conta) {
+		em.merge(conta);
+	}
+	
+	public void alterarAll(Conta conta) {
 		List<Conta> mesesExistentes = mesesExistentes(conta);
-		int count = 0;
-		if(conta.isRepetir()) {
-			for (Conta c : mesesExistentes) {
-				em.merge(geraContasParaDozeMeses(count++, c));
-			}
-
-		}else {
-			em.merge(conta);
-		}
-		
+		mesesExistentes.forEach( c ->  em.merge(geraContaPelaAlteracao(c, conta)) );
 	}
 	
 	public void remove(int id) {
 		Conta c = em.find(Conta.class, id);
 		em.remove(c);
+	}
+
+	public void removeAll(int id) {
+		List<Conta> mesesExistentes = mesesExistentes(em.find(Conta.class, id));
+		mesesExistentes.forEach(conta -> em.remove(conta));
 	}
 	
 	public Conta getContaById(int id) {
@@ -119,15 +136,16 @@ public class ContaDao {
 	}
 
 	private LocalDate dataParaSeisMeses() {
-		return LocalDate.now().plusMonths(6).with(TemporalAdjusters.lastDayOfMonth());
+		return LocalDate.now().plusMonths(12).with(TemporalAdjusters.lastDayOfMonth());
 	}
 
 	public List<Conta> mesesExistentes(Conta conta) {
-		List<Conta> contas = null;
-		Query q = em.createQuery("select c from Conta c where c.chaveGrupoContas = :param1");
-		q.setParameter("param1", conta.getChaveGrupoContas());
-		contas = q.getResultList();
-		return contas;
+		Conta c = em.find(Conta.class, conta.getId());
+		Query q = em.createQuery("select c from Conta c where c.chaveGrupoContas = :param1 and c.dataPagamento >= :param2");
+		q.setParameter("param1", c.getChaveGrupoContas());
+		q.setParameter("param2", c.getDataPagamento());
+		return q.getResultList();
 	}
+
 	
 }
